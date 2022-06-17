@@ -5,10 +5,12 @@ from bs4 import BeautifulSoup
 import string
 import os
 import pickle
+from .model import getResult
 
 app = Flask(__name__)
 
 def create_app():
+    
     return app
 
 
@@ -98,9 +100,7 @@ def home():
         #         addr2 = addr2 + ','
         # addr = addr2
         m = scrape(addr)
-        loaded_model = pickle.load(os.open('real_estate_model.sav', 'w'))
-        result = loaded_model.predict([[6000,2,3]])
-        print(result)
+        n = getResult([0])
         return render_template("index.html", test=m)
     return render_template("index.html")
 
