@@ -8,9 +8,7 @@ from sklearn.tree import DecisionTreeRegressor
 from sklearn.model_selection import GridSearchCV
 import pickle
 
-DATA_CSV = 'Housing.csv'
-
-data = pd.read_csv(DATA_CSV, usecols=[0,1,2,3])
+data = pd.read_csv('../Housing.csv', usecols=[0,1,2,3])
 
 prices = data['price']
 features = data.drop('price', axis=1)
@@ -33,5 +31,5 @@ def fit_model(X, y):
 
 reg = fit_model(X_train, y_train)
 
-def getResult(list):
-    return reg.predict([6000, 2, 2])
+def results(list):
+    return reg.predict([[6000,2,3]])

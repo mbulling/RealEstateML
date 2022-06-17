@@ -1,6 +1,15 @@
 import pickle
+import os
+import requests
 
 def getResult(list):
-    loaded_model = pickle.load(open('real_estate_model.sav', 'rb'))
-    result = loaded_model.predict([[6000,2,3]])
+    # with open('real_estate_model.sav', 'rb') as myfile:
+    #     loaded_model = pickle.load(myfile)
+    # with open('real_estate_model.sav', 'r', encoding='utf-8') as file1:
+    #     loaded_model = pickle.load(file1)
+    with open('real_estate_model.sav', "rb") as file:
+        unpickler = pickle.Unpickler(file);
+    
+    loaded_model = pickle.load(unpickler)
+    result = unpickler.predict([[6000,2,3]])
     return result 
