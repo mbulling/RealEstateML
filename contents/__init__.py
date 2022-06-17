@@ -3,6 +3,7 @@ from os import path
 import requests
 from bs4 import BeautifulSoup
 import string
+import os
 import pickle
 
 app = Flask(__name__)
@@ -97,8 +98,8 @@ def home():
         #         addr2 = addr2 + ','
         # addr = addr2
         m = scrape(addr)
-        loaded_model = pickle.load(open('real_estate_model.sav', 'rb'))
-        result = loaded_model.predict([6000,2,3])
+        loaded_model = pickle.load(os.open('real_estate_model.sav', 'w'))
+        result = loaded_model.predict([[6000,2,3]])
         print(result)
         return render_template("index.html", test=m)
     return render_template("index.html")
