@@ -9,9 +9,9 @@ from sklearn.model_selection import GridSearchCV
 import pickle
 from io import StringIO
 
-data = pd.read_csv('https://drive.google.com/file/d/1yfOwsh3yAXRIN2spFSwFtQLfv-zgNyxh/view?usp=sharing', usecols=[0,1,2,3])
-prices = data['price']
-features = data.drop('price', axis=1)
+data = pd.read_csv('https://raw.githubusercontent.com/mbulling/RealEstateML/master/contents/Housing.csv', usecols=[0,1,2,3])
+prices =  pd.read_csv('https://raw.githubusercontent.com/mbulling/RealEstateML/master/contents/Housing.csv', usecols=[0])
+features =  pd.read_csv('https://raw.githubusercontent.com/mbulling/RealEstateML/master/contents/Housing.csv', usecols=[1,2,3])
 
 X_train, X_test, y_train, y_test = train_test_split(features,prices,test_size=0.2)
 
@@ -31,5 +31,5 @@ def fit_model(X, y):
 
 reg = fit_model(X_train, y_train)
 
-def results(list):
+def geResult(list):
     return reg.predict([[6000,2,3]])
