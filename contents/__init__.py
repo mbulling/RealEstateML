@@ -135,7 +135,7 @@ def home():
         # addr = addr2
         m = scrape(addr)
         n = int(getResult([m['sqft'], m['bed'], m['bath']]))
-        return render_template("index.html", test=n, test2=m)
+        return render_template("predict.html", test=n, test2=m)
     return render_template("index.html")
 
 @app.route('/about')
