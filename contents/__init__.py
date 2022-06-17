@@ -15,10 +15,10 @@ from sklearn.metrics import make_scorer
 from sklearn.tree import DecisionTreeRegressor
 from sklearn.model_selection import GridSearchCV
 
+app = Flask(__name__)
 
 def create_app():
-    app = Flask(__name__)
-    
+
     return app
 
 data = pd.read_csv('https://raw.githubusercontent.com/RubixML/Housing/master/dataset.csv')
