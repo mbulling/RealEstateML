@@ -3,11 +3,13 @@
     <form method="POST">
       <br>
       <br>
-      <h3 align="center" style="font-size:50px;color:green;">Machine Learning Real Estate Price Estimator</h3>
-      
       <br>
-      <center><h1 style="font-size:75px">Predicted Retail Price: ${{ test }}.00</h1></center>
-      <center><h2 style="font-size:45px">Features: {{ test2 }}</h2></center>
+      <h3 align="center" style="font-size:55px">{{ add }}</h3>
+      <br>
+      <center><h1 style="font-size:40px">Predicted Retail Price:</h1></center>
+      <center><bold><h1 style="font-size:100px;color:green">${{ test }}.00</h1></bold></center>
+      <br>
+      <center><h2 style="font-size:45px">{{ test2['bed'] }} Bed | {{ test2['bath'] }} Bath | {{ test2['sqft'] }} SQFT</h2></center>
       
       
       <br>

@@ -22,9 +22,9 @@ app = Flask(__name__)
 def create_app():
     return app
 
-data = pd.read_csv('https://raw.githubusercontent.com/ywchiu/riii/master/data/house-prices.csv', usecols=[0,1,2,3])
-prices =  pd.read_csv('https://raw.githubusercontent.com/ywchiu/riii/master/data/house-prices.csv', usecols=[1])
-features =  pd.read_csv('https://raw.githubusercontent.com/ywchiu/riii/master/data/house-prices.csv', usecols=[2,3,4])
+data = pd.read_csv('https://raw.githubusercontent.com/RubixML/Housing/master/dataset.csv')
+prices =  pd.read_csv('https://raw.githubusercontent.com/RubixML/Housing/master/dataset.csv')['SalePrice']
+features =  pd.read_csv('https://raw.githubusercontent.com/RubixML/Housing/master/dataset.csv', usecols=['GrLivArea', 'FullBath', 'BedroomAbvGr'])
 
 X_train, X_test, y_train, y_test = train_test_split(features,prices,test_size=0.2)
 
@@ -58,15 +58,79 @@ def retrieveHTML(address):
         address type: address in format "street,city,state"
         rtype: url string corresponding to address on homesnap
         """
-        comma1 = address.index(',')
-        comma2 = address.index(',', comma1 + 1)
+
+        codes = { "alabama": "al", 
+            "alaska": "ak", 
+            "arizona": "az", "arkansas": "ar",
+            "california": "ca", 
+            "colorado": "co",
+            "connecticut": "ct",
+            "delaware": "de",
+            "florida": "fl",
+            "georgia": "ga",
+            "hawaii": "hi",
+            "idaho": "id",
+            "illinois": "il",
+            "indiana": "in",
+            "iowa": "ia",
+            "kansas": "ks",
+            "kentucky": "ky",
+            "louisiana": "la",
+            "maine": "me",
+            "maryland": "md",
+            "massachusetts": "ma",
+            "michigan": "mi",
+            "minnesota": "mn",
+            "mississippi": "ms",
+            "missouri": "mo",
+            "montana": "mt",
+            "nebraska": "ne",
+            "nevada": "nv",
+            "new hampshire": "nh",
+            "new jersey": "nj",
+            "new mexico": "nm",
+            "new york": "ny",
+            "north carolina": "nc",
+            "north dakota": "nd",
+            "ohio": "oh",
+            "oklahoma": "ok",
+            "oregon": "or",
+            "pennsylvania": "pa",
+            "rhode island": "ri",
+            "south carolina": "sc",
+            "south dakota": "sd",
+            "tennessee": "tn",
+            "texas": "tx",
+            "utah": "ut",
+            "vermont": "vt",
+            "virginia": "va",
+            "washington": "wa",
+            "west virginia": "wv",
+            "wisconsin": "wi",
+            "wyoming": "wy",
+            "district of columbia": "dc",
+            "american samoa": "as",
+            "guam": "gu",
+            "northern mariana islands": "mp",
+            "puerto rico": "pr",
+            "united states minor outlying islands": "um",
+            "u.s. virgin islands": "vi"
+        }        
+        address = address.lower()
+        for n in codes:
+            if n in address:
+                address  = address.replace(n, codes[n])
+
+        comma1 = address.index(', ')
+        comma2 = address.index(', ', comma1 + 1)
 
         street = address[:comma1]
-        city = address[comma1+1:comma2]
-        state = address[comma2+1:]
+        city = address[comma1+2:comma2]
+        state = address[comma2+2:]
 
         street = street.translate(street.maketrans(' ', '-'))
         city = city.translate(city.maketrans(' ', '-'))
+        print('https://www.homesnap.com/{state}/{city}/{street}'.format(street=street,city=city,state=state))
         return 'https://www.homesnap.com/{state}/{city}/{street}'.format(street=street,city=city,state=state)
 
     url = zillowify(address)
@@ -122,20 +186,39 @@ def scrape(address):
     return info
 
 
+def addCommas(str):
+    """
+    1000 -> 1,000
+    1000000 -> 1,000,000
+    """
+    if len(str) < 4:
+        return str
+    rev = str[::-1]
+    res = ''
+    for i, char in enumerate(rev):
+        if i % 3 == 0 and i != 0:
+            res =  res + ',' + char
+        else:
+            res += char
+    
+    return res[::-1]
+
+        
+
+
 @app.route('/', methods=['GET', 'POST'])
 def home():
     if request.method == "POST":
         addr = request.form.get('addr')
-        # addr2 = ''
-        # for c in addr:
-        #     if c != ' ':
-        #         addr2 = addr2 + c
-        #     else:
-        #         addr2 = addr2 + ','
-        # addr = addr2
         m = scrape(addr)
         n = int(getResult([m['sqft'], m['bed'], m['bath']]))
-        return render_template("predict.html", test=n, test2=m)
+        h = addCommas(str(n))
+        if m['sqft'] == -1 or m['bed'] == -1 or m['bath'] == -1:
+            m['sqft'] = -1
+            m['bath'] = -1
+            m['bed'] = -1
+            return render_template("predict.html", test=0, test2=m, add="Sorry, That Address Does Not Exist In Our Database")
+        return render_template("predict.html", test=h, test2=m, add=addr)
     return render_template("index.html")
 
 @app.route('/about')
