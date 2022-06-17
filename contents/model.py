@@ -7,9 +7,9 @@ from sklearn.metrics import make_scorer
 from sklearn.tree import DecisionTreeRegressor
 from sklearn.model_selection import GridSearchCV
 import pickle
+from io import StringIO
 
-data = pd.read_csv('../Housing.csv', usecols=[0,1,2,3])
-
+data = pd.read_csv('https://drive.google.com/file/d/1yfOwsh3yAXRIN2spFSwFtQLfv-zgNyxh/view?usp=sharing', usecols=[0,1,2,3])
 prices = data['price']
 features = data.drop('price', axis=1)
 
