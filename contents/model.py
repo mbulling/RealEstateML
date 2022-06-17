@@ -7,8 +7,6 @@ from sklearn.metrics import make_scorer
 from sklearn.tree import DecisionTreeRegressor
 from sklearn.model_selection import GridSearchCV
 
-%matplotlib inline
-
 DATA_CSV = 'CSV_DATA_SET'
 
 data = pd.read_csv(DATA_CSV)

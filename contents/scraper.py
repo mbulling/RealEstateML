@@ -70,7 +70,7 @@ def generateInfo(html):
 
     return dict
 
-address = input("enter address in format street,city,state: ")
-html = retrieveHTML(address)
-info = generateInfo(html)
-print(info)
+def main(address):
+    html = retrieveHTML(address)
+    info = generateInfo(html)
+    return info
