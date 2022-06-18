@@ -20,7 +20,7 @@ def create_app():
     app = Flask(__name__)
     return app
 
-data = pd.read_csv('https://raw.githubusercontent.com/RubixML/Housing/master/dataset.csv')
+#data = pd.read_csv('https://raw.githubusercontent.com/RubixML/Housing/master/dataset.csv')
 prices =  pd.read_csv('https://raw.githubusercontent.com/RubixML/Housing/master/dataset.csv')['SalePrice']
 features =  pd.read_csv('https://raw.githubusercontent.com/RubixML/Housing/master/dataset.csv', usecols=['GrLivArea', 'FullBath', 'BedroomAbvGr'])
 
