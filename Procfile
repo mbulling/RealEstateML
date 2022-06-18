@@ -1,1 +1,1 @@
-gunicorn main:app
+gunicorn: web "main:create_app()"
